@@ -22,3 +22,4 @@ jobs:
     - run: pip install --upgrade pip
     - run: pip install "black<23" pylint==v3.0.0a3 mypy==v0.902
     - run: black --include="\.py" .
+    - run: pylint --include="\.py" .
