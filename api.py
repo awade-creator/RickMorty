@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 
 BASE = 'https://rickandmortyapi.com/api/'
 endpoint = 'character'
@@ -27,6 +28,7 @@ def json_parse(response):
     
     for item in response['results']:
         personas = {
+            'id': item['id'],
             'name': item['name'],
             'number_of_episodes': len(item['episode']),
         }
@@ -35,18 +37,13 @@ def json_parse(response):
     return personaList
 
 
+listing = []
+
 json_data = api_request(BASE, endpoint, 0)
 for n_page in range(1, get_pages(json_data) + 1):
     print(n_page)
-    api_request(BASE, endpoint, n_page)
+    listing.extend(json_parse(api_request(BASE, endpoint, n_page)))
+    
+dFormat = pd.DataFrame(listing)
 
-
-#print(json_parse(json_data))
-
-
-
-
-
-
-
-
+dFormat.to_csv('personaList.csv', index=False)
